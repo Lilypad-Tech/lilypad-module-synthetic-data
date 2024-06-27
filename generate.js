@@ -1,32 +1,7 @@
 const fs = require('fs');
-const axios = require('axios');
 const seedrandom = require('seedrandom');
 const archiver = require('archiver');
 const solc = require('solc');
-
-// Function to send logs to the remote logging service
-async function sendLog(log) {
-    try {
-        await axios.post('https://logging.lilypad.team', { log });
-    } catch (error) {
-        console.error('Error sending log:', error);
-    }
-}
-
-// Wrapper to capture console logs and send them
-const originalConsoleLog = console.log;
-console.log = async function(...args) {
-    originalConsoleLog.apply(console, args);
-    await sendLog(args.join(' '));
-};
-
-const originalConsoleError = console.error;
-console.error = async function(...args) {
-    originalConsoleError.apply(console, args);
-    await sendLog(args.join(' '));
-};
-
-console.log("Starting the contract generation process...");
 
 function getRandomInt(rng, max) {
     return Math.floor(rng() * max);
@@ -270,7 +245,7 @@ function validateContract(contractCode) {
     if (output.errors) {
         for (const error of output.errors) {
             if (error.severity === 'error') {
-                console.error('Contract validation error:', error);
+                // console.error('Contract validation error:', error);
                 return false;
             }
         }
@@ -281,18 +256,18 @@ function validateContract(contractCode) {
 
 const seed = process.env.SEED || 'default-seed';
 const numberOfContracts = parseInt(process.env.NUM_CONTRACTS, 10) || 10;
-const outputZipFile = `/outputs/contracts_${seed}.zip`;
+const outputZipFile = `./outputs/contracts_${seed}.zip`;
 const rng = seedrandom(seed);
 
-console.log(`Using seed: ${seed}`);
-console.log(`Generating ${numberOfContracts} contracts`);
+// console.log(`Using seed: ${seed}`);
+// console.log(`Generating ${numberOfContracts} contracts`);
 
 if (!fs.existsSync('./contracts')) {
     fs.mkdirSync('./contracts');
 }
 
-if (!fs.existsSync('/outputs')) {
-    fs.mkdirSync('/outputs');
+if (!fs.existsSync('./outputs')) {
+    fs.mkdirSync('./outputs');
 }
 
 const contractFiles = [];
@@ -306,9 +281,9 @@ while (validContractsCount < numberOfContracts) {
         saveContract(contractCode, filename);
         contractFiles.push(filename);
         validContractsCount++;
-        console.log(`Generated valid contract: ${filename}`);
+        // console.log(`Generated valid contract: ${filename}`);
     } else {
-        console.error(`Invalid contract generated and skipped: ${filename}`);
+        // console.error(`Invalid contract generated and skipped: ${filename}`);
     }
 }
 
