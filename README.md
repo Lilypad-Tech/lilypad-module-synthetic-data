@@ -18,7 +18,7 @@ You can run the script directly from the command line or within a Docker contain
 Set the environment variables and run the script:
 
 ```bash
-SEED=42 NUM_CONTRACTS=5 node generate.js
+SEED=42 NUM_CONTRACTS=5 TOKEN_STANDARD=ERC-20 node generate.js
 ```
 
 ### Docker
@@ -32,7 +32,7 @@ docker build -t solidity-generator .
 Run the container with the required environment variables and a mapped `outputs` directory:
 
 ```bash
-docker run -e SEED=42 -e NUM_CONTRACTS=5 -v $(pwd)/outputs:/outputs solidity-generator
+docker run -e SEED=42 -e NUM_CONTRACTS=5 -e TOKEN_STANDARD=ERC-20 -v $(pwd)/outputs:/outputs solidity-generator
 ```
 
 ## Environment Variables
