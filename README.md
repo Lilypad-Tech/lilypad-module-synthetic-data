@@ -2,6 +2,10 @@
 
 This containerised Lilypad module generates random Solidity contracts and validates them using the Solidity compiler (`solc`). Only validated contracts are included in the final ZIP archive output. If a generated contract contains errors, it is discarded and a new one is generated until the requested number of valid contracts is achieved.
 
+Contract reference data is available in the `refdata` directory collected from: 
+
+- https://www.openzeppelin.com/contracts
+
 ## Running on Lilypad 
 
 To run on Lilypad via the CLI: 
